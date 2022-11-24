@@ -102,7 +102,7 @@ module.exports.deleteMessage = async (req, res, next) => {
     const { id } = req.body;
     const data = await Messages.findByIdAndUpdate({
       _id: mongoose.Types.ObjectId(id)
-    },{isDelete:true}).then((data) => data.populate("sender", "_id avatarURL"));
+    },{isDelete:true},{new:true}).then((data) => data.populate("sender", "_id username avatarURL"));
     if (data) {
       return res.status(200).json({
         data: data});
