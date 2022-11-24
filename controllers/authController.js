@@ -40,8 +40,7 @@ module.exports.signin = async (req, res) => {
 
 module.exports.signup = async (req, res) => {
   const { password, username, phoneNumber, dob, gender } = req.body;
-  const avatarURL =
-    "https://scontent.fsgn5-11.fna.fbcdn.net/v/t39.30808-6/310229638_1559528767795246_3641942269697383784_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=-mx7WAVAeZAAX-zKKDr&_nc_ht=scontent.fsgn5-11.fna&oh=00_AT_heJ226LJuPdGEWqeU_ihlEIrZCFEgC3CT8KmA_cZVcg&oe=634FF9AE";
+  const avatarURL = ""
   try {
     const existingUser = await User.findOne({ phoneNumber });
 
@@ -95,6 +94,26 @@ module.exports.checkOTP = async (req, res) => {
 
     res.status(200).json({
       user: { phoneNumber, password, isVerifyOtp: existingUser.isVerifyOtp },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Something went wrong!" });
+  }
+};
+
+module.exports.changeVerifyOTP = async (req, res) => {
+  const userId = req.userId;
+  const {isVerifyOtp} = req.body
+  try {
+    const existingUser = 
+    await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        isVerifyOtp : isVerifyOtp
+      },{new:true}
+    );
+
+    res.status(200).json({
+      user: { existingUser },
     });
   } catch (err) {
     res.status(500).json({ message: "Something went wrong!" });

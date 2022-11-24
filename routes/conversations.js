@@ -8,7 +8,8 @@ const {
   outGroup,
   updateCreator,
   getImageAndVideo,
-  checkConversation
+  checkConversation,
+  getFileApplication
 } = require("../controllers/conversationController");
 const { auth } = require("../middleware/auth");
 
@@ -23,6 +24,7 @@ router.post("/deleteMember", auth, deleteMember);
 router.post("/outGroup", auth, outGroup);
 router.post("/updateCreator", auth, updateCreator);
 router.post("/getImageAndVideo",auth, getImageAndVideo);
+router.post("/getFileApplication",auth, getFileApplication);
 router.post("/checkConversation",auth, checkConversation);
 
 

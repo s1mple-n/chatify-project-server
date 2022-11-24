@@ -256,6 +256,31 @@ module.exports.getImageAndVideo = async (req, res) => {
   }
 };
 
+module.exports.getFileApplication = async (req, res) => {
+  const { conversationId } = req.body;
+  const file = await Messages.aggregate([
+    {
+      $match: {
+        conversation: mongoose.Types.ObjectId(conversationId),
+      },
+    },
+    { $match: { media: { $exists: true, $not: { $size: 0 } },isDelete:false } },
+    { $project: { text:"$text",media: "$media" } },
+    { $unwind: "$media" },
+    {
+      $match: {
+        "media.type": { $in: [/^application/i] },
+      },
+    },
+  ]);
+
+  try {
+    res.status(200).json({ file });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
+};
+
 module.exports.checkConversation = async (req, res) => {
   const { member } = req.body;
   try {
